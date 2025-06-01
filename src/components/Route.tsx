@@ -4,12 +4,16 @@ import MapContainer from '../components/MapContainer';
 import StatCard from '../components/StatCard';
 import { motion } from 'framer-motion';
 
-const Route = () => {
+type SectionProps = {
+  id?: string;
+};
+
+const Route = ({ id }: SectionProps) => {
   const { language } = useLanguage();
   const t = translations[language];
   
   return (
-    <section className="py-20 md:py-32 bg-gradient-to-b from-white to-gray-50">
+    <section id={id} className="py-20 md:py-32 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 md:px-6">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}

@@ -2,6 +2,7 @@ import { Phone, Mail, MessageSquare } from 'lucide-react';
 import { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../utils/translations';
+import { motion } from 'framer-motion';
 
 const Contact = () => {
   const { language } = useLanguage();
@@ -34,25 +35,63 @@ const Contact = () => {
       service: ''
     });
   };
+
+  // Animation variants for staggered children
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
   
   return (
     <section id="contact" className="py-16 md:py-24 bg-gray-50">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="max-w-3xl mx-auto text-center mb-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-3xl mx-auto text-center mb-12"
+        >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             {t.contact.title}
           </h2>
           <p className="text-lg text-gray-600">
             {t.contact.subtitle}
           </p>
-        </div>
+        </motion.div>
         
         <div className="grid md:grid-cols-2 gap-12">
-          <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="bg-white rounded-xl shadow-md p-6 md:p-8"
+          >
             <h3 className="text-xl font-semibold mb-6">{t.contact.form.title}</h3>
-            <form onSubmit={handleSubmit}>
-              <div className="space-y-4">
-                <div>
+            <motion.form 
+              onSubmit={handleSubmit}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <motion.div variants={containerVariants} className="space-y-4">
+                <motion.div variants={itemVariants}>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                     {t.contact.form.name}
                   </label>
@@ -63,12 +102,12 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary transition-shadow duration-200"
                   />
-                </div>
+                </motion.div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
+                <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <motion.div variants={itemVariants}>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                       {t.contact.form.email}
                     </label>
@@ -79,10 +118,10 @@ const Contact = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary transition-shadow duration-200"
                     />
-                  </div>
-                  <div>
+                  </motion.div>
+                  <motion.div variants={itemVariants}>
                     <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
                       {t.contact.form.phone}
                     </label>
@@ -92,12 +131,12 @@ const Contact = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary transition-shadow duration-200"
                     />
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
                 
-                <div>
+                <motion.div variants={itemVariants}>
                   <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-1">
                     {t.contact.form.service}
                   </label>
@@ -106,7 +145,7 @@ const Contact = () => {
                     name="service"
                     value={formData.service}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary transition-shadow duration-200"
                   >
                     <option value="">{t.contact.form.selectService}</option>
                     <option value="packages">{t.services.items.packages.title}</option>
@@ -117,9 +156,9 @@ const Contact = () => {
                     <option value="machinery">{t.services.items.machinery.title}</option>
                     <option value="doors">{t.services.items.doors.title}</option>
                   </select>
-                </div>
+                </motion.div>
                 
-                <div>
+                <motion.div variants={itemVariants}>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
                     {t.contact.form.message}
                   </label>
@@ -130,26 +169,42 @@ const Contact = () => {
                     onChange={handleChange}
                     rows={4}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary transition-shadow duration-200"
                   ></textarea>
-                </div>
+                </motion.div>
                 
-                <button
+                <motion.button
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   type="submit"
-                  className="w-full px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-primary-dark transition-colors"
+                  className="w-full px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-primary-dark transition-all duration-300"
                 >
                   {t.contact.form.submit}
-                </button>
-              </div>
-            </form>
-          </div>
+                </motion.button>
+              </motion.div>
+            </motion.form>
+          </motion.div>
           
-          <div>
-            <div className="bg-primary text-white rounded-xl shadow-md p-6 md:p-8 mb-8">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            variants={containerVariants}
+          >
+            <motion.div 
+              variants={itemVariants}
+              className="bg-primary text-white rounded-xl shadow-md p-6 md:p-8 mb-8"
+            >
               <h3 className="text-xl font-semibold mb-6">{t.contact.info.title}</h3>
               
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
+              <motion.div 
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="space-y-6"
+              >
+                <motion.div variants={itemVariants} className="flex items-start space-x-4">
                   <div className="bg-white/10 rounded-lg p-3">
                     <Phone className="h-6 w-6" />
                   </div>
@@ -158,9 +213,9 @@ const Contact = () => {
                     <p className="mt-1 text-white/80">🇬🇧 07754 004767</p>
                     <p className="text-white/80">🇵🇱 517565260</p>
                   </div>
-                </div>
+                </motion.div>
                 
-                <div className="flex items-start space-x-4">
+                <motion.div variants={itemVariants} className="flex items-start space-x-4">
                   <div className="bg-white/10 rounded-lg p-3">
                     <MessageSquare className="h-6 w-6" />
                   </div>
@@ -169,9 +224,9 @@ const Contact = () => {
                     <p className="mt-1 text-white/80">🇬🇧 07754 004767</p>
                     <p className="text-white/80">🇵🇱 0048517565260</p>
                   </div>
-                </div>
+                </motion.div>
                 
-                <div className="flex items-start space-x-4">
+                <motion.div variants={itemVariants} className="flex items-start space-x-4">
                   <div className="bg-white/10 rounded-lg p-3">
                     <Mail className="h-6 w-6" />
                   </div>
@@ -179,30 +234,38 @@ const Contact = () => {
                     <p className="font-medium">{t.contact.info.email}</p>
                     <p className="mt-1 text-white/80">Lukastranspodlasie@gmail.com</p>
                   </div>
-                </div>
-              </div>
-            </div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
             
-            <div className="bg-white rounded-xl shadow-md p-6 md:p-8 border border-gray-100">
+            <motion.div 
+              variants={itemVariants}
+              className="bg-white rounded-xl shadow-md p-6 md:p-8 border border-gray-100"
+            >
               <h3 className="text-xl font-semibold mb-4">{t.contact.hours.title}</h3>
               <p className="text-gray-600 mb-4">{t.contact.hours.description}</p>
               
-              <div className="space-y-2">
-                <div className="flex justify-between">
+              <motion.div 
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="space-y-2"
+              >
+                <motion.div variants={itemVariants} className="flex justify-between">
                   <span className="text-gray-600">{t.contact.hours.weekdays}</span>
                   <span className="font-medium">8:00 - 20:00</span>
-                </div>
-                <div className="flex justify-between">
+                </motion.div>
+                <motion.div variants={itemVariants} className="flex justify-between">
                   <span className="text-gray-600">{t.contact.hours.saturday}</span>
                   <span className="font-medium">9:00 - 18:00</span>
-                </div>
-                <div className="flex justify-between">
+                </motion.div>
+                <motion.div variants={itemVariants} className="flex justify-between">
                   <span className="text-gray-600">{t.contact.hours.sunday}</span>
                   <span className="font-medium">10:00 - 16:00</span>
-                </div>
-              </div>
-            </div>
-          </div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>

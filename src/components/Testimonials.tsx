@@ -2,12 +2,16 @@ import { Star } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../utils/translations';
 
-const Testimonials = () => {
+type SectionProps = {
+  id?: string;
+};
+
+const Testimonials = ({ id }: SectionProps) => {
   const { language } = useLanguage();
   const t = translations[language];
   
   return (
-    <section className="py-16 md:py-24 bg-gray-50">
+    <section id={id} className="py-16 md:py-24 bg-gray-50">
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-3xl mx-auto text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
