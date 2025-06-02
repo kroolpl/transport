@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Header from '../components/Header';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';

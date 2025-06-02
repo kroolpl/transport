@@ -1,29 +1,99 @@
-const MapContainer = () => (
-  <div className="relative h-64 md:h-80">
-    <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl" />
-    
-    {/* Simplified map visualization */}
-    <div className="absolute top-1/4 left-1/4">
-      <div className="bg-blue-600 text-white px-3 py-1 rounded-lg shadow-lg">UK</div>
+import { useEffect, useRef } from 'react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../utils/translations';
+
+// Define city coordinates
+const cities: {
+  uk: Record<string, [number, number]>;
+  poland: Record<string, [number, number]>;
+} = {
+  uk: {
+    london: [51.5074, -0.1278],
+    manchester: [53.4808, -2.2426],
+    birmingham: [52.4862, -1.8904],
+    glasgow: [55.8642, -4.2518]
+  },
+  poland: {
+    warsaw: [52.2297, 21.0122],
+    krakow: [50.0647, 19.9450],
+    gdansk: [54.3520, 18.6466],
+    wroclaw: [51.1079, 17.0385]
+  }
+};
+
+const MapContainer = () => {
+  const mapRef = useRef<L.Map | null>(null);
+  const { language } = useLanguage();
+  const t = translations[language];
+
+  useEffect(() => {
+    if (!mapRef.current) {
+      // Initialize map with a lower zoom level (4 instead of 5)
+      mapRef.current = L.map('map').setView([52.5, 10], 4);
+
+      // Add OpenStreetMap tiles
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(mapRef.current);
+
+      // Custom icon for markers
+      const customIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+
+      // Add markers for UK cities
+      Object.entries(cities.uk).forEach(([city, coords]) => {
+        L.marker(coords as L.LatLngExpression, { icon: customIcon })
+          .addTo(mapRef.current!)
+          .bindPopup(`<b>${city.charAt(0).toUpperCase() + city.slice(1)}</b><br>${t.route.uk.title}`);
+      });
+
+      // Add markers for Polish cities
+      const polishIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+
+      Object.entries(cities.poland).forEach(([city, coords]) => {
+        L.marker(coords as L.LatLngExpression, { icon: polishIcon })
+          .addTo(mapRef.current!)
+          .bindPopup(`<b>${city.charAt(0).toUpperCase() + city.slice(1)}</b><br>${t.route.poland.title}`);
+      });
+    }
+
+    // Cleanup function
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
+    };
+  }, [language, t.route.uk.title, t.route.poland.title]);
+
+  return (
+    <div className="relative h-[600px]">
+      <style>
+        {`
+          .leaflet-container {
+            z-index: 0;
+          }
+        `}
+      </style>
+      <div id="map" className="w-full h-full rounded-lg" />
     </div>
-    
-    <div className="absolute bottom-1/4 right-1/4">
-      <div className="bg-red-600 text-white px-3 py-1 rounded-lg shadow-lg">Poland</div>
-    </div>
-    
-    {/* Animated route line */}
-    <div className="absolute top-1/3 left-1/3 w-1/2 h-0.5 bg-gradient-to-r from-blue-500 to-red-500">
-      <div className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-blue-500 rounded-full animate-pulse" />
-    </div>
-    
-    {/* Stats overlay */}
-    <div className="absolute bottom-4 left-0 right-0 text-center">
-      <div className="inline-flex items-center gap-4 bg-white/80 px-4 py-2 rounded-full shadow">
-        <span>🚚 120+ weekly trips</span>
-        <span>⏱️ 24-48h delivery</span>
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 export default MapContainer; 
