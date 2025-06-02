@@ -2,6 +2,7 @@ import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../utils/translations';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import lukas1 from '../images/lukas1.webp';
 import lukas2 from '../images/lukas2.webp';
 
@@ -12,6 +13,14 @@ type SectionProps = {
 const Hero = ({ id }: SectionProps) => {
   const { language } = useLanguage();
   const t = translations[language];
+  
+  const handleScrollToServices = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const element = document.getElementById('services');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   
   return (
     <section id={id} className="pt-24 md:pt-32 pb-16 md:pb-24 bg-gradient-to-br from-primary to-primary-dark overflow-hidden relative">
@@ -47,23 +56,23 @@ const Hero = ({ id }: SectionProps) => {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="flex flex-col sm:flex-row gap-4"
               >
-                <motion.a 
+                <motion.button 
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  href="#services" 
+                  onClick={handleScrollToServices}
                   className="inline-flex items-center justify-center px-6 py-3 bg-white text-primary font-medium rounded-md hover:bg-gray-100 transition-colors"
                 >
                   {t.hero.exploreServices}
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </motion.a>
-                <motion.a 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  href="#contact" 
-                  className="inline-flex items-center justify-center px-6 py-3 bg-accent text-white font-medium rounded-md hover:bg-accent-dark transition-colors"
-                >
-                  {t.hero.getQuote}
-                </motion.a>
+                </motion.button>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link 
+                    to="/contact" 
+                    className="inline-flex items-center justify-center w-full px-6 py-3 bg-accent text-white font-medium rounded-md hover:bg-accent-dark transition-colors"
+                  >
+                    {t.hero.getQuote}
+                  </Link>
+                </motion.div>
               </motion.div>
             </motion.div>
           </div>

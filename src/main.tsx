@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import App from './App.tsx';
 import ContactPage from './pages/Contact.tsx';
 import './index.css';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 // Wrap each page with motion for transitions
 const PageWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -36,8 +37,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AnimatePresence mode="wait">
-      <RouterProvider router={router} />
-    </AnimatePresence>
+    <LanguageProvider>
+      <AnimatePresence mode="wait">
+        <RouterProvider router={router} />
+      </AnimatePresence>
+    </LanguageProvider>
   </StrictMode>
 );

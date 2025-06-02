@@ -1,4 +1,4 @@
-import { Menu, Phone, Users, Wrench } from 'lucide-react';
+import { Menu, Phone, Users, Wrench, Home } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../utils/translations';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -24,6 +24,11 @@ const Navigation = ({ onSectionClick }: NavigationProps) => {
 
   const handleSectionClick = (id: string) => {
     setIsOpen(false); // Close sheet when navigating
+    if (id === 'contact') {
+      navigate('/contact');
+      return;
+    }
+    
     if (location.pathname !== '/') {
       navigate('/');
       setTimeout(() => {
@@ -36,6 +41,15 @@ const Navigation = ({ onSectionClick }: NavigationProps) => {
     }
   };
 
+  const handleHomeClick = () => {
+    setIsOpen(false);
+    if (location.pathname !== '/') {
+      navigate('/');
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   const handleGetQuoteClick = () => {
     setIsOpen(false); // Close sheet when clicking Get Quote
   };
@@ -44,6 +58,13 @@ const Navigation = ({ onSectionClick }: NavigationProps) => {
     <>
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center space-x-8">
+        <button
+          onClick={handleHomeClick}
+          className="text-gray-700 hover:text-primary transition-colors inline-flex items-center gap-2"
+        >
+          <Home size={18} />
+          {t.nav.home}
+        </button>
         <button
           onClick={() => handleSectionClick('services')}
           className="text-gray-700 hover:text-primary transition-colors inline-flex items-center gap-2"
@@ -58,13 +79,13 @@ const Navigation = ({ onSectionClick }: NavigationProps) => {
           <Users size={18} />
           {t.nav.about}
         </button>
-        <button
-          onClick={() => handleSectionClick('contact')}
+        <Link
+          to="/contact"
           className="text-gray-700 hover:text-primary transition-colors inline-flex items-center gap-2"
         >
           <Phone size={18} />
           {t.nav.contact}
-        </button>
+        </Link>
         <button 
           onClick={toggleLanguage}
           className="px-3 py-1 bg-gray-100 rounded-md text-sm font-medium hover:bg-gray-200 transition-colors"
@@ -95,6 +116,13 @@ const Navigation = ({ onSectionClick }: NavigationProps) => {
           </SheetHeader>
           <div className="flex flex-col space-y-4 mt-6">
             <button
+              onClick={handleHomeClick}
+              className="text-left text-gray-700 hover:text-primary transition-colors inline-flex items-center gap-2"
+            >
+              <Home size={18} />
+              {t.nav.home}
+            </button>
+            <button
               onClick={() => handleSectionClick('services')}
               className="text-left text-gray-700 hover:text-primary transition-colors inline-flex items-center gap-2"
             >
@@ -108,13 +136,14 @@ const Navigation = ({ onSectionClick }: NavigationProps) => {
               <Users size={18} />
               {t.nav.about}
             </button>
-            <button
-              onClick={() => handleSectionClick('contact')}
+            <Link
+              to="/contact"
+              onClick={() => setIsOpen(false)}
               className="text-left text-gray-700 hover:text-primary transition-colors inline-flex items-center gap-2"
             >
               <Phone size={18} />
               {t.nav.contact}
-            </button>
+            </Link>
             <div className="flex items-center justify-between pt-2">
               <button 
                 onClick={toggleLanguage}

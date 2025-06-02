@@ -1,6 +1,7 @@
 export const translations = {
   en: {
     nav: {
+      home: 'Home',
       services: 'Services',
       about: 'About Us',
       contact: 'Contact',
@@ -175,6 +176,7 @@ export const translations = {
   },
   pl: {
     nav: {
+      home: 'Strona Główna',
       services: 'Usługi',
       about: 'O Nas',
       contact: 'Kontakt',
