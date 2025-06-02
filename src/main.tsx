@@ -1,11 +1,12 @@
-import { StrictMode } from 'react';
+import { StrictMode, lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import App from './App.tsx';
-import ContactPage from './pages/Contact.tsx';
 import './index.css';
 import { LanguageProvider } from './contexts/LanguageContext';
+
+const LazyContactPage = lazy(() => import('./pages/Contact.tsx'));
 
 // Wrap each page with motion for transitions
 const PageWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -31,7 +32,13 @@ const router = createBrowserRouter([
   },
   {
     path: "/contact",
-    element: <PageWrapper><ContactPage /></PageWrapper>,
+    element: (
+      <PageWrapper>
+        <Suspense fallback={null}>
+          <LazyContactPage />
+        </Suspense>
+      </PageWrapper>
+    ),
   },
 ]);
 
