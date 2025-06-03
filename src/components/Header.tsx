@@ -27,7 +27,7 @@ const Header = () => {
             <img 
               src={logo} 
               alt="Lukas Trans Logo" 
-              className="h-10 w-auto" 
+              className="h-12 w-auto"
             />
             <span className="text-xl font-bold text-primary">Lukas Trans</span>
           </Link>
