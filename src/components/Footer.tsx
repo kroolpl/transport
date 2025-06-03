@@ -1,4 +1,4 @@
-import { Truck, Facebook, Instagram, Mail, Phone } from 'lucide-react';
+import { Facebook, Instagram, Mail, Phone } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../utils/translations';
 import { Link, useLocation } from 'react-router-dom';
@@ -26,9 +26,8 @@ const Footer = () => {
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           {/* Company Info */}
           <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <Truck className="h-6 w-6 text-primary-light" />
-              <span className="text-xl font-bold">Lukas Transport</span>
+            <div className="mb-4">
+              <span className="text-xl font-bold">Lukas Trans</span>
             </div>
             <p className="text-gray-400 mb-6">
               {t.footer.tagline}
@@ -111,7 +110,7 @@ const Footer = () => {
         {/* Copyright */}
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm mb-4 md:mb-0">
-            © {new Date().getFullYear()} Lukas Transport. {t.footer.rights}
+            © {new Date().getFullYear()} Lukas Trans. {t.footer.rights}
           </p>
           <div className="flex space-x-6">
             <Link 

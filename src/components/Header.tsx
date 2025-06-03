@@ -1,6 +1,7 @@
 import { Truck } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import Navigation from './Navigation';
+import logo from '../images/logo.webp';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -23,8 +24,12 @@ const Header = () => {
       <div className="container mx-auto px-4 md:px-6 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
-            <Truck className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold text-primary">Lukas Transport</span>
+            <img 
+              src={logo} 
+              alt="Lukas Trans Logo" 
+              className="h-10 w-auto" 
+            />
+            <span className="text-xl font-bold text-primary">Lukas Trans</span>
           </Link>
 
           <Navigation onSectionClick={scrollToSection} />
